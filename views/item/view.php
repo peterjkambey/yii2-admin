@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
+use mdm\admin\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model mdm\admin\models\AuthItem */
@@ -77,4 +78,19 @@ DetailView::widget([
             <select multiple size="20" class="form-control list" data-target="assigned"></select>
         </div>
     </div>
+
+    <h3>Users on This Role</h3>
+    <div class="row">
+        <div class="col-sm-12">
+			<?php 
+			$auth = Yii::$app->authManager;
+			$lists = $auth->getUserIdsByRole($model->name);
+			foreach ($lists as $list) {
+					echo "<li>";
+					echo Html::a(User::findIdentity($list)->username,['/admin/assignment/view','id'=>$list]);
+					echo "</li>";
+			}			
+			?>
+		</div>
+	</div>
 </div>
